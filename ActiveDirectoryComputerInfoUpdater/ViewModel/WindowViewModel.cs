@@ -35,6 +35,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         private void LoadOrganizationalUnits()
         {
+            _organizationalUnits = new OrganizationalUnitsTreeViewModel();
             _organizationalUnits.LoadTree();
         }
     }
