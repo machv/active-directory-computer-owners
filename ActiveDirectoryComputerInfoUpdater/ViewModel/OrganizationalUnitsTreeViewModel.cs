@@ -9,5 +9,9 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 {
     public class OrganizationalUnitsTreeViewModel : NotifyPropertyBase
     {
+        public void LoadTree()
+        {
+
+        }
     }
 }

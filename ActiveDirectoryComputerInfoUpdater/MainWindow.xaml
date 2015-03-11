@@ -18,7 +18,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TreeView HorizontalAlignment="Left">
+        <TreeView HorizontalAlignment="Left" ItemsSource="{Binding OrganizationalUnits}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate>
                     <TextBlock Padding="2" />
@@ -26,5 +26,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
+        <Button Command="{Binding LoadOrganizationalUnitsCommand}" Content="Load OUs" Grid.Column="1" Margin="50" />
+        
     </Grid>
 </Window>
