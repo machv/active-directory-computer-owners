@@ -2,6 +2,7 @@
 using Mach.Wpf.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.DirectoryServices;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,9 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 {
     public class OrganizationalUnitsTreeViewModel : NotifyPropertyBase
     {
-        private OrganizationalUnitViewModel _root;
+        private ObservableCollection<OrganizationalUnitViewModel> _root;
 
-        public OrganizationalUnitViewModel Root
+        public ObservableCollection<OrganizationalUnitViewModel> Root
         {
             get { return _root; }
             set
@@ -30,7 +31,10 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             root.Name = "AD";
             root.LoadChildren(true);
 
-            Root = root;
+            ObservableCollection<OrganizationalUnitViewModel> units = new ObservableCollection<OrganizationalUnitViewModel>();
+            units.Add(root);
+
+            Root = units;
         }
     }
 }

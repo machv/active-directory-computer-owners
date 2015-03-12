@@ -18,7 +18,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TreeView HorizontalAlignment="Left" Grid.Column="0" Width="250" ItemsSource="{Binding OrganizationalUnits}">
+        <TreeView HorizontalAlignment="Left" Grid.Column="0" Width="250" ItemsSource="{Binding OrganizationalUnits.Root}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding ChildOrganizationalUnits}">
                         <TextBlock Margin="0" Text="{Binding Name}" />

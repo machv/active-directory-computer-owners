@@ -13,10 +13,10 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 {
     public class WindowViewModel : NotifyPropertyBase
     {
-        private ObservableCollection<OrganizationalUnitViewModel> _organizationalUnits;
+        private OrganizationalUnitsTreeViewModel _organizationalUnits;
         private DelegateCommand _loadOrganizationalUnitsCommand;
 
-        public ObservableCollection<OrganizationalUnitViewModel> OrganizationalUnits
+        public OrganizationalUnitsTreeViewModel OrganizationalUnits
         {
             get { return _organizationalUnits; }
             set
@@ -37,21 +37,10 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         private void LoadOrganizationalUnits()
         {
-            ObservableCollection<OrganizationalUnitViewModel> units = new ObservableCollection<OrganizationalUnitViewModel>();
+            OrganizationalUnitsTreeViewModel organizationalUnits = new OrganizationalUnitsTreeViewModel();
+            organizationalUnits.LoadTree();
 
-            DirectoryEntry rootEntry = ActiveDirectory.GetDirectoryEntry();
-            OrganizationalUnitViewModel root = new OrganizationalUnitViewModel(rootEntry);
-            root.Name = "AD";
-            root.LoadChildren(true);
-
-            units.Add(root);
-
-            OrganizationalUnits = units;
-
-           // OrganizationalUnitsTreeViewModel organizationalUnits = new OrganizationalUnitsTreeViewModel();
-           // organizationalUnits.LoadTree();
-
-           // OrganizationalUnits = organizationalUnits;
+            OrganizationalUnits = organizationalUnits;
         }
     }
 }
