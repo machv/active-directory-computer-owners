@@ -12,24 +12,41 @@
         <ViewModel:WindowViewModel />
     </Window.DataContext>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+    <DockPanel Margin="0">
+        <Border DockPanel.Dock="Bottom"  Background="WhiteSmoke" BorderBrush="Silver" BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-        <TreeView HorizontalAlignment="Left" Grid.Column="0" Width="250" ItemsSource="{Binding OrganizationalUnits.Root}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding ChildOrganizationalUnits}">
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+                    <Button Command="{Binding LoadOrganizationalUnitsCommand}" Content="Load Structure"  Margin="5" />
+                </WrapPanel>
+            </Grid>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="190" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TreeView BorderThickness="0"  Grid.Column="0" ItemsSource="{Binding OrganizationalUnits.Root}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding ChildOrganizationalUnits}">
                         <TextBlock Margin="0" Text="{Binding Name}" />
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
 
-        <StackPanel Grid.Column="1">
-            <Button Command="{Binding LoadOrganizationalUnitsCommand}" Content="Load OUs"  Margin="50" />
-        </StackPanel>
+            <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" BorderBrush="Silver" BorderThickness="1,0" />
+
+            <StackPanel Grid.Column="2">
+
+            </StackPanel>
 
 
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>
