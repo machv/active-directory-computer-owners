@@ -18,15 +18,18 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TreeView HorizontalAlignment="Left" ItemsSource="{Binding OrganizationalUnits}">
+        <TreeView HorizontalAlignment="Left" Grid.Column="0" Width="250" ItemsSource="{Binding OrganizationalUnits}">
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate>
-                    <TextBlock Padding="2" />
+                <HierarchicalDataTemplate ItemsSource="{Binding ChildOrganizationalUnits}">
+                        <TextBlock Margin="0" Text="{Binding Name}" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <Button Command="{Binding LoadOrganizationalUnitsCommand}" Content="Load OUs" Grid.Column="1" Margin="50" />
-        
+        <StackPanel Grid.Column="1">
+            <Button Command="{Binding LoadOrganizationalUnitsCommand}" Content="Load OUs"  Margin="50" />
+        </StackPanel>
+
+
     </Grid>
 </Window>
