@@ -1,4 +1,5 @@
-﻿using Mach.Wpf.Mvvm;
+﻿using ActiveDirectoryComputerInfoUpdater.Logic;
+using Mach.Wpf.Mvvm;
 using System;
 using System.DirectoryServices;
 
@@ -31,6 +32,10 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                 if (_owner != value)
                 {
                     _owner = value;
+
+                    if (value != null && _directoryEntry != null)
+                        ActiveDirectory.UpdateDirectoryEntry(_directoryEntry, "managedBy", value.DistinguishedName);
+
                     OnPropertyChanged();
                 }
             }

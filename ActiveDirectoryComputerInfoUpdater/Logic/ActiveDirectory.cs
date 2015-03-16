@@ -6,6 +6,33 @@ namespace ActiveDirectoryComputerInfoUpdater.Logic
 {
     public class ActiveDirectory
     {
+        /// <summary>
+        /// Update property on directory entry with new value.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="property"></param>
+        /// <param name="value"></param>
+        /// <returns>true if property already existed and was updated.</returns>
+        public static bool UpdateDirectoryEntry(DirectoryEntry entry, string property, object value)
+        {
+            bool exists = false;
+
+            if (entry.Properties.Contains(property))
+            {
+                entry.Properties[property].Value = value;
+
+                exists = true;
+            }
+            else
+            {
+                entry.Properties[property].Add(value);
+            }
+
+            entry.CommitChanges();
+
+            return exists;
+        }
+
         public static SearchResultCollection GetSingleLevelSubOrganizationalUnits(DirectoryEntry searchRoot)
         {
             string searchFilter = "(|(objectcategory=organizationalunit)(objectcategory=container))";
