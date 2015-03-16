@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ActiveDirectoryComputerInfoUpdater"
         xmlns:ViewModel="clr-namespace:ActiveDirectoryComputerInfoUpdater.ViewModel"
+        xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
         xmlns:Mvvm="clr-namespace:Mach.Wpf.Mvvm"
         mc:Ignorable="d"
         Title="AD Computers Owners" Height="350" Width="525">
@@ -12,6 +13,15 @@
     <Window.DataContext>
         <ViewModel:WindowViewModel />
     </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate x:Key="AutoCompleteBoxItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding Name}" Width="100" />
+                <Label Content="{Binding SamAccountName}" FontStyle="Italic" Foreground="DarkGray" />
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
 
     <DockPanel Margin="0">
         <Border DockPanel.Dock="Bottom"  Background="WhiteSmoke" BorderBrush="Silver" BorderThickness="0,1,0,0">
@@ -55,31 +65,44 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="{Binding SelectedOrganizationalUnit.DistinguishedName}" FontWeight="UltraLight" FontSize="22" />
-                
+                <TextBlock Text="{Binding SelectedOrganizationalUnit.DistinguishedName}" FontWeight="UltraLight" FontSize="22" Padding="2" />
+
                 <DataGrid Grid.Row="1" 
                           AutoGenerateColumns="False"
                           SelectionMode="Single"
                           CanUserResizeColumns="True" 
                           CanUserSortColumns="True"
                           ItemsSource="{Binding SelectedOrganizationalUnit.Computers}">
+                    <DataGrid.Resources>
+                        <local:BindingProxy x:Key="proxy" Data="{Binding }" />
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                         <DataGridTextColumn Header="Operating System" Binding="{Binding OperatingSystem}" />
                         <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
                         <DataGridTextColumn Header="Location" Binding="{Binding Location}" />
                         <DataGridTextColumn Header="BitLocker keys" Binding="{Binding BitlockerRecoveryKeys}" />
-                        
-                        <DataGridTemplateColumn Header="Image" Width="SizeToCells" IsReadOnly="True">
+
+                        <DataGridTemplateColumn Header="Owner" Width="SizeToCells" IsReadOnly="False">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Image Source="{Binding Image}" />
+                                    <toolkit:AutoCompleteBox
+                                                ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Users}"
+                                                ValueMemberPath="SamAccountName"
+                                                ItemTemplate="{StaticResource AutoCompleteBoxItemTemplate}"
+                                                SelectedItem="{Binding Owner, Mode=TwoWay}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-             </Grid>
+
+                <!--<toolkit:AutoCompleteBox Grid.Row="2"
+                                                ItemsSource="{Binding Users}"
+                                                ValueMemberPath="SamAccountName"
+                                                ItemTemplate="{StaticResource AutoCompleteBoxItemTemplate}"
+                                                SelectedItem="{Binding Owner, Mode=TwoWay}" />-->
+            </Grid>
 
 
         </Grid>

@@ -6,6 +6,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 {
     public class ComputerViewModel : NotifyPropertyBase
     {
+        private UserViewModel _owner;
         private DirectoryEntry _directoryEntry;
 
         public ComputerViewModel(DirectoryEntry directoryEntry)
@@ -22,5 +23,17 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
         public string ManagedBy { get; set; }
         public int BitlockerRecoveryKeys { get; set; }
         public string Location { get; set; }
+        public UserViewModel Owner
+        {
+            get { return _owner; }
+            set
+            {
+                if (_owner != value)
+                {
+                    _owner = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
     }
 }
