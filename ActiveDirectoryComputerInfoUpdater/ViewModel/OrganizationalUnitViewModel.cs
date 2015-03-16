@@ -109,10 +109,15 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                     if (result.Properties.Contains("description"))
                         computer.Description = result.Properties["description"][0] as string;
 
+                    if (result.Properties.Contains("location"))
+                        computer.Location = result.Properties["location"][0] as string;
+                    
                     if (result.Properties.Contains("managedBy"))
                         computer.ManagedBy = result.Properties["managedBy"][0] as string;
 
-                    //managedBy
+                    using (SearchResultCollection results = ActiveDirectory.GetBitlockerRecoveryKeys(result.GetDirectoryEntry()))
+                        computer.BitlockerRecoveryKeys = results.Count;
+
                     Computers.Add(computer);
                 }
             }

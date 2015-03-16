@@ -56,6 +56,10 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="{Binding SelectedOrganizationalUnit.DistinguishedName}" FontWeight="UltraLight" FontSize="22" />
+                
+                <DataGrid Grid.Row="1" ItemsSource="{Binding SelectedOrganizationalUnit.Computers}">
+                    
+                </DataGrid>
              </Grid>
 
 

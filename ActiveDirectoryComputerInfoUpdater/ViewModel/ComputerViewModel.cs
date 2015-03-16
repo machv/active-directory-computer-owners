@@ -1,9 +1,5 @@
 ﻿using Mach.Wpf.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.DirectoryServices;
 
 namespace ActiveDirectoryComputerInfoUpdater.ViewModel
@@ -24,6 +20,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
         public string OperatingSystem { get; set; }
         public string Description { get; set; }
         public string ManagedBy { get; set; }
-
+        public int BitlockerRecoveryKeys { get; set; }
+        public string Location { get; set; }
     }
 }

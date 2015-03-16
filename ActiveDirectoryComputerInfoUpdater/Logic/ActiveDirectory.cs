@@ -33,6 +33,15 @@ namespace ActiveDirectoryComputerInfoUpdater.Logic
             return results;
         }
 
+        public static SearchResultCollection GetBitlockerRecoveryKeys(DirectoryEntry searchRoot)
+        {
+            string searchFilter = "(objectClass=msFVE-RecoveryInformation)";
+
+            SearchResultCollection results = FindObjects(searchFilter, searchRoot, SearchScope.Subtree);
+
+            return results;
+        }
+
         public static SearchResultCollection FindObjects(string filter, DirectoryEntry searchRoot, SearchScope scope)
         {
             DirectoryEntry entry = null;
