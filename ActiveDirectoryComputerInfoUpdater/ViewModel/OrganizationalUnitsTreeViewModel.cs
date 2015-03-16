@@ -39,13 +39,9 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
         {
             DirectoryEntry rootEntry = ActiveDirectory.GetDirectoryEntry();
             OrganizationalUnitViewModel root = new OrganizationalUnitViewModel(rootEntry);
-            root.Name = "AD";
             root.LoadChildren(true);
 
-            ObservableCollection<OrganizationalUnitViewModel> units = new ObservableCollection<OrganizationalUnitViewModel>();
-            units.Add(root);
-
-            Root = units;
+            Root = root.ChildOrganizationalUnits;
         }
     }
 }
