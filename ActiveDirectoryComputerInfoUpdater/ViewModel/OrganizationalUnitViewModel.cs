@@ -14,7 +14,8 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
     {
         private string _name;
         private ObservableCollection<OrganizationalUnitViewModel> _children;
- 
+        private ObservableCollection<ComputerViewModel> _computers;
+
         public DirectoryEntry Entry { get; set; }
         public string Name
         {
@@ -25,7 +26,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                 OnPropertyChanged();
             }
         }
-        public string DN { get; set; }
+        public string DistinguishedName { get; set; }
         public ObservableCollection<OrganizationalUnitViewModel> ChildOrganizationalUnits
         {
             get { return _children; }
@@ -36,10 +37,21 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             }
         }
 
+        public ObservableCollection<ComputerViewModel> Computers
+        {
+            get { return _computers; }
+            set
+            {
+                _computers = value;
+                OnPropertyChanged();
+            }
+        }
+
         public OrganizationalUnitViewModel(DirectoryEntry entry)
         {
             ChildOrganizationalUnits = new ObservableCollection<OrganizationalUnitViewModel>();
             Entry = entry;
+            Computers = new ObservableCollection<ComputerViewModel>();
         }
 
         public void LoadChildren()
@@ -59,7 +71,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                         {
                             OrganizationalUnitViewModel unit = new OrganizationalUnitViewModel(child.GetDirectoryEntry());
                             unit.Name = name;
-                            unit.DN = GetDistinguishedName(child.Path);
+                            unit.DistinguishedName = GetDistinguishedName(child.Path);
 
                             if (recursive)
                                 unit.LoadChildren();
@@ -70,6 +82,42 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                 }
             }
         }
+
+        public void LoadComputers()
+        {
+            Computers.Clear();
+
+            using (SearchResultCollection computers = ActiveDirectory.GetComputersInOrganizationalUnit(Entry))
+            {
+                foreach (SearchResult result in computers)
+                {
+                    ComputerViewModel computer = new ComputerViewModel(result.GetDirectoryEntry());
+                    computer.DistinguishedName = GetDistinguishedName(result.Path);
+
+                    if (result.Properties.Contains("lastLogon"))
+                        computer.LastLogon = DateTime.FromFileTime((long)(result.Properties["lastLogon"][0]));
+
+                    if (result.Properties.Contains("logonCount"))
+                        computer.LogonCount = (int)result.Properties["logonCount"][0];
+
+                    if (result.Properties.Contains("name"))
+                        computer.Name = result.Properties["name"][0] as string;
+
+                    if (result.Properties.Contains("operatingSystem"))
+                        computer.OperatingSystem = result.Properties["operatingSystem"][0] as string;
+
+                    if (result.Properties.Contains("description"))
+                        computer.Description = result.Properties["description"][0] as string;
+
+                    if (result.Properties.Contains("managedBy"))
+                        computer.ManagedBy = result.Properties["managedBy"][0] as string;
+
+                    //managedBy
+                    Computers.Add(computer);
+                }
+            }
+        }
+
 
         private string GetDistinguishedName(string path)
         {

@@ -54,7 +54,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="{Binding SelectedOrganizationalUnit.DN}" FontWeight="UltraLight" FontSize="24" />
+                <TextBlock Text="{Binding SelectedOrganizationalUnit.DistinguishedName}" FontWeight="UltraLight" FontSize="22" />
              </Grid>
 
 

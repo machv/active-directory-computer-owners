@@ -47,7 +47,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         private void OrganizationalUnitChanged()
         {
-            //MessageBox.Show("Changed");
+            _selectedOrganizationalUnit.LoadComputers();
         }
 
         private void LoadOrganizationalUnits()

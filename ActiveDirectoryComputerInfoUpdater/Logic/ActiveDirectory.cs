@@ -15,6 +15,15 @@ namespace ActiveDirectoryComputerInfoUpdater.Logic
             return results;
         }
 
+        public static SearchResultCollection GetComputersInOrganizationalUnit(DirectoryEntry searchRoot)
+        {
+            string searchFilter = "(objectcategory=computer)";
+
+            SearchResultCollection results = FindObjects(searchFilter, searchRoot, SearchScope.OneLevel);
+
+            return results;
+        }
+
         public static SearchResultCollection FindObjects(string filter, DirectoryEntry searchRoot, SearchScope scope)
         {
             DirectoryEntry entry = null;
