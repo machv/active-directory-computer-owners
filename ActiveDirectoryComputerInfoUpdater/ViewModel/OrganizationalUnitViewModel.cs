@@ -59,6 +59,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                         {
                             OrganizationalUnitViewModel unit = new OrganizationalUnitViewModel(child.GetDirectoryEntry());
                             unit.Name = name;
+                            unit.DN = GetDistinguishedName(child.Path);
 
                             if (recursive)
                                 unit.LoadChildren();
@@ -68,6 +69,17 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                     }
                 }
             }
+        }
+
+        private string GetDistinguishedName(string path)
+        {
+            int i = path.IndexOf('/', 7);
+            if (i >= 0 && path.Length > i + 1)
+            {
+                return path.Substring(i + 1);
+            }
+
+            return path;
         }
     }
 }
