@@ -1,13 +1,4 @@
-﻿using ActiveDirectoryComputerInfoUpdater.Logic;
-using Mach.Wpf.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.DirectoryServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using Mach.Wpf.Mvvm;
 using System.Windows.Input;
 
 namespace ActiveDirectoryComputerInfoUpdater.ViewModel
@@ -56,7 +47,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         private void OrganizationalUnitChanged()
         {
-            MessageBox.Show("Changed");
+            //MessageBox.Show("Changed");
         }
 
         private void LoadOrganizationalUnits()

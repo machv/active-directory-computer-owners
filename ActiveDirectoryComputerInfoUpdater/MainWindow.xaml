@@ -33,8 +33,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TreeView BorderThickness="0"  
-                      Grid.Column="0" 
+            <TreeView Grid.Column="0" 
+                      BorderThickness="0,1,0,0"
+                      BorderBrush="Silver"
                       ItemsSource="{Binding OrganizationalUnits.Root}"
                       local:OrganizationalUnitTreeViewSelectionBehaviour.SelectedItemChanged="{Binding OrganizationalUnitChangedCommand}"
                       local:OrganizationalUnitTreeViewSelectionBehaviour.SelectedItem="{Binding SelectedOrganizationalUnit}">
