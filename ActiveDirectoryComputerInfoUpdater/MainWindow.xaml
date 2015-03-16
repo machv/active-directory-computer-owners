@@ -57,8 +57,27 @@
 
                 <TextBlock Text="{Binding SelectedOrganizationalUnit.DistinguishedName}" FontWeight="UltraLight" FontSize="22" />
                 
-                <DataGrid Grid.Row="1" ItemsSource="{Binding SelectedOrganizationalUnit.Computers}">
-                    
+                <DataGrid Grid.Row="1" 
+                          AutoGenerateColumns="False"
+                          SelectionMode="Single"
+                          CanUserResizeColumns="True" 
+                          CanUserSortColumns="True"
+                          ItemsSource="{Binding SelectedOrganizationalUnit.Computers}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Operating System" Binding="{Binding OperatingSystem}" />
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" />
+                        <DataGridTextColumn Header="BitLocker keys" Binding="{Binding BitlockerRecoveryKeys}" />
+                        
+                        <DataGridTemplateColumn Header="Image" Width="SizeToCells" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Image}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
                 </DataGrid>
              </Grid>
 
