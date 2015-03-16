@@ -56,8 +56,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Logic\ActiveDirectory.cs" />
+    <Compile Include="Logic\OrganizationalUnitTreeViewSelectionBehaviour.cs" />
     <Compile Include="Mvvm\DelegateCommand.cs" />
     <Compile Include="Mvvm\NotifyPropertyBase.cs" />
+    <Compile Include="Mvvm\TreeViewSelectionBehavior.cs" />
     <Compile Include="ViewModel\OrganizationalUnitsTreeViewModel.cs" />
     <Compile Include="ViewModel\OrganizationalUnitViewModel.cs" />
     <Compile Include="ViewModel\WindowViewModel.cs" />

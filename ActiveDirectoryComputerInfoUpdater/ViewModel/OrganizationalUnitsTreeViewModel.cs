@@ -13,6 +13,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
     public class OrganizationalUnitsTreeViewModel : NotifyPropertyBase
     {
         private ObservableCollection<OrganizationalUnitViewModel> _root;
+        private OrganizationalUnitViewModel _selectedOrganizationalUnit;
 
         public ObservableCollection<OrganizationalUnitViewModel> Root
         {
@@ -20,6 +21,16 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             set
             {
                 _root = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public OrganizationalUnitViewModel SelectedOrganizationalUnit
+        {
+            get { return _selectedOrganizationalUnit; }
+            set
+            {
+                _selectedOrganizationalUnit = value;
                 OnPropertyChanged();
             }
         }

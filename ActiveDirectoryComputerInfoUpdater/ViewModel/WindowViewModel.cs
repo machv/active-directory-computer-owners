@@ -7,6 +7,7 @@ using System.DirectoryServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ActiveDirectoryComputerInfoUpdater.ViewModel
@@ -15,6 +16,8 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
     {
         private OrganizationalUnitsTreeViewModel _organizationalUnits;
         private DelegateCommand _loadOrganizationalUnitsCommand;
+        private DelegateCommand _organizationalUnitChangedCommand;
+        private OrganizationalUnitViewModel _selectedOrganizationalUnit;
 
         public OrganizationalUnitsTreeViewModel OrganizationalUnits
         {
@@ -25,14 +28,35 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                 OnPropertyChanged();
             }
         }
+        public OrganizationalUnitViewModel SelectedOrganizationalUnit
+        {
+            get { return _selectedOrganizationalUnit; }
+            set
+            {
+                _selectedOrganizationalUnit = value;
+                OnPropertyChanged();
+            }
+        }
         public ICommand LoadOrganizationalUnitsCommand
         {
             get { return _loadOrganizationalUnitsCommand; }
+        }
+        public ICommand OrganizationalUnitChangedCommand
+        {
+            get { return _organizationalUnitChangedCommand; }
         }
 
         public WindowViewModel()
         {
             _loadOrganizationalUnitsCommand = new DelegateCommand(LoadOrganizationalUnits);
+            _organizationalUnitChangedCommand = new DelegateCommand(OrganizationalUnitChanged);
+
+            _selectedOrganizationalUnit = new OrganizationalUnitViewModel(null); //dummy selected item
+        }
+
+        private void OrganizationalUnitChanged()
+        {
+            MessageBox.Show("Changed");
         }
 
         private void LoadOrganizationalUnits()

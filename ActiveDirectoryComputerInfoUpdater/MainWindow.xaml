@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ActiveDirectoryComputerInfoUpdater"
         xmlns:ViewModel="clr-namespace:ActiveDirectoryComputerInfoUpdater.ViewModel"
+        xmlns:Mvvm="clr-namespace:Mach.Wpf.Mvvm"
         mc:Ignorable="d"
         Title="AD Computers Owners" Height="350" Width="525">
 
@@ -32,7 +33,11 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TreeView BorderThickness="0"  Grid.Column="0" ItemsSource="{Binding OrganizationalUnits.Root}">
+            <TreeView BorderThickness="0"  
+                      Grid.Column="0" 
+                      ItemsSource="{Binding OrganizationalUnits.Root}"
+                      local:OrganizationalUnitTreeViewSelectionBehaviour.SelectedItemChanged="{Binding OrganizationalUnitChangedCommand}"
+                      local:OrganizationalUnitTreeViewSelectionBehaviour.SelectedItem="{Binding SelectedOrganizationalUnit}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding ChildOrganizationalUnits}">
                         <TextBlock Margin="0" Text="{Binding Name}" />
