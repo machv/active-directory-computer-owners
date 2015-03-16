@@ -24,6 +24,15 @@ namespace ActiveDirectoryComputerInfoUpdater.Logic
             return results;
         }
 
+        public static SearchResultCollection GetUsers(DirectoryEntry searchRoot)
+        {
+            string searchFilter = "(&(objectClass=user)(objectCategory=person))";
+
+            SearchResultCollection results = FindObjects(searchFilter, searchRoot, SearchScope.Subtree);
+
+            return results;
+        }
+
         public static SearchResultCollection FindObjects(string filter, DirectoryEntry searchRoot, SearchScope scope)
         {
             DirectoryEntry entry = null;
@@ -116,6 +125,17 @@ namespace ActiveDirectoryComputerInfoUpdater.Logic
 
             buf.Remove(buf.Length - 1, 1);
             return buf.ToString();
+        }
+
+        public static string GetDistinguishedNameFromPath(string path)
+        {
+            int i = path.IndexOf('/', 7);
+            if (i >= 0 && path.Length > i + 1)
+            {
+                return path.Substring(i + 1);
+            }
+
+            return path;
         }
     }
 }

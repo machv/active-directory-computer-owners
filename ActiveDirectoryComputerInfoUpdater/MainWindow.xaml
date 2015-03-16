@@ -23,6 +23,7 @@
 
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                     <Button Command="{Binding LoadOrganizationalUnitsCommand}" Content="Load Structure" Padding="5"  Margin="5" />
+                    <Button Command="{Binding LoadUsersCommand}" Content="Load Users" Padding="5" Margin="5" />
                 </WrapPanel>
             </Grid>
         </Border>

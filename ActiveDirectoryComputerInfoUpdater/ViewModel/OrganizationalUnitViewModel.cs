@@ -71,7 +71,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                         {
                             OrganizationalUnitViewModel unit = new OrganizationalUnitViewModel(child.GetDirectoryEntry());
                             unit.Name = name;
-                            unit.DistinguishedName = GetDistinguishedName(child.Path);
+                            unit.DistinguishedName = ActiveDirectory.GetDistinguishedNameFromPath(child.Path);
 
                             if (recursive)
                                 unit.LoadChildren();
@@ -92,7 +92,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                 foreach (SearchResult result in computers)
                 {
                     ComputerViewModel computer = new ComputerViewModel(result.GetDirectoryEntry());
-                    computer.DistinguishedName = GetDistinguishedName(result.Path);
+                    computer.DistinguishedName = ActiveDirectory.GetDistinguishedNameFromPath(result.Path);
 
                     if (result.Properties.Contains("lastLogon"))
                         computer.LastLogon = DateTime.FromFileTime((long)(result.Properties["lastLogon"][0]));
@@ -116,18 +116,6 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                     Computers.Add(computer);
                 }
             }
-        }
-
-
-        private string GetDistinguishedName(string path)
-        {
-            int i = path.IndexOf('/', 7);
-            if (i >= 0 && path.Length > i + 1)
-            {
-                return path.Substring(i + 1);
-            }
-
-            return path;
         }
     }
 }
