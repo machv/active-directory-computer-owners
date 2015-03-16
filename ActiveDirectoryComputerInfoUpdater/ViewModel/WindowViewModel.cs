@@ -78,7 +78,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                     user.SamAccountName = result.Properties["samaccountname"][0] as string;
                     user.DistinguishedName = ActiveDirectory.GetDistinguishedNameFromPath(result.Path);
                     if (result.Properties.Contains("c"))
-                        user.Country = result.Properties["c"][0];
+                        user.Country = result.Properties["c"][0] as string;
 
                     users.Add(user);
                 }
@@ -89,7 +89,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         private void OrganizationalUnitChanged()
         {
-            _selectedOrganizationalUnit.LoadComputers();
+            _selectedOrganizationalUnit.LoadComputers(Users);
         }
 
         private void LoadOrganizationalUnits()

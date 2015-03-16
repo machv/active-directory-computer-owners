@@ -85,6 +85,11 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         public void LoadComputers()
         {
+            LoadComputers(null);
+        }
+
+        public void LoadComputers(ObservableCollection<UserViewModel> users)
+        {
             Computers.Clear();
 
             using (SearchResultCollection computers = ActiveDirectory.GetComputersInOrganizationalUnit(Entry))
@@ -111,9 +116,16 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
                     if (result.Properties.Contains("location"))
                         computer.Location = result.Properties["location"][0] as string;
-                    
+
                     if (result.Properties.Contains("managedBy"))
+                    {
                         computer.ManagedBy = result.Properties["managedBy"][0] as string;
+
+                        if (users != null)
+                        {
+                           computer.Owner = users.Where(u => u.DistinguishedName == computer.ManagedBy).FirstOrDefault();
+                        }
+                    }
 
                     using (SearchResultCollection results = ActiveDirectory.GetBitlockerRecoveryKeys(result.GetDirectoryEntry()))
                         computer.BitlockerRecoveryKeys = results.Count;

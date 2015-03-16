@@ -73,9 +73,6 @@
                           CanUserResizeColumns="True" 
                           CanUserSortColumns="True"
                           ItemsSource="{Binding SelectedOrganizationalUnit.Computers}">
-                    <DataGrid.Resources>
-                        <local:BindingProxy x:Key="proxy" Data="{Binding }" />
-                    </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                         <DataGridTextColumn Header="Operating System" Binding="{Binding OperatingSystem}" />
@@ -83,14 +80,16 @@
                         <DataGridTextColumn Header="Location" Binding="{Binding Location}" />
                         <DataGridTextColumn Header="BitLocker keys" Binding="{Binding BitlockerRecoveryKeys}" />
 
-                        <DataGridTemplateColumn Header="Owner" Width="SizeToCells" IsReadOnly="False">
+                        <DataGridTemplateColumn Header="Owner" IsReadOnly="False">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
+                                    <!--  -->
                                     <toolkit:AutoCompleteBox
                                                 ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Users}"
                                                 ValueMemberPath="SamAccountName"
                                                 ItemTemplate="{StaticResource AutoCompleteBoxItemTemplate}"
-                                                SelectedItem="{Binding Owner, Mode=TwoWay}" />
+                                                Text="{Binding Owner.SamAccountName, Mode=OneTime}"
+                                                SelectedItem="{Binding Owner, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
