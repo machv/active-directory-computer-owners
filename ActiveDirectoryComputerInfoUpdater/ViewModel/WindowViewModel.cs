@@ -11,6 +11,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
     public class WindowViewModel : NotifyPropertyBase
     {
         private bool _usersLoading = false;
+        private bool _organizationalUnitsLoading = false;
         private OrganizationalUnitsTreeViewModel _organizationalUnits;
         private DelegateCommand _loadOrganizationalUnitsCommand;
         private DelegateCommand _organizationalUnitChangedCommand;
@@ -65,7 +66,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         public WindowViewModel()
         {
-            _loadOrganizationalUnitsCommand = new DelegateCommand(LoadOrganizationalUnits);
+            _loadOrganizationalUnitsCommand = new DelegateCommand(LoadOrganizationalUnits, CanLoadOrganizationalUnits);
             _organizationalUnitChangedCommand = new DelegateCommand(OrganizationalUnitChanged);
             _loadUsersCommand = new DelegateCommand(LoadUsers, CanExecuteLoadUsers);
             _queryLoggedUsersCommand = new DelegateCommand(QueryLoggedUsers, CanExecuteQueryLoggedUsers);
@@ -80,8 +81,25 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             .ContinueWith(users =>
             {
                 Users = users.Result;
+
                 CommandManager.InvalidateRequerySuggested();
             }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            Task.Run(() =>
+            {
+                return DoLoadOrganizationalUnits();
+            })
+            .ContinueWith(units =>
+            {
+                OrganizationalUnits = units.Result;
+
+                CommandManager.InvalidateRequerySuggested();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private bool CanLoadOrganizationalUnits(object parameter)
+        {
+            return _organizationalUnitsLoading == false;
         }
 
         private bool CanExecuteLoadUsers(object parameter)
@@ -141,10 +159,19 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         private void LoadOrganizationalUnits()
         {
+            OrganizationalUnits = DoLoadOrganizationalUnits();
+        }
+
+        private OrganizationalUnitsTreeViewModel DoLoadOrganizationalUnits()
+        {
+            _organizationalUnitsLoading = true;
+
             OrganizationalUnitsTreeViewModel organizationalUnits = new OrganizationalUnitsTreeViewModel();
             organizationalUnits.LoadTree();
 
-            OrganizationalUnits = organizationalUnits;
+            _organizationalUnitsLoading = false;
+
+            return organizationalUnits;
         }
     }
 }
