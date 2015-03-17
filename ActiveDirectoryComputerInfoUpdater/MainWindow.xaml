@@ -67,6 +67,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="{Binding SelectedOrganizationalUnit.DistinguishedName}" FontWeight="UltraLight" FontSize="22" Padding="2" />
@@ -109,6 +110,8 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+                
+                <!--<ProgressBar Height="5" Grid.Row="2" />-->
             </Grid>
         </Grid>
     </DockPanel>
