@@ -7,6 +7,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 {
     public class ComputerViewModel : NotifyPropertyBase
     {
+        private DelegateCommand _assignOwnerCommand;
         private UserViewModel _owner;
         private UserViewModel _detectedUser;
         private DirectoryEntry _directoryEntry;
@@ -14,6 +15,18 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
         public ComputerViewModel(DirectoryEntry directoryEntry)
         {
             _directoryEntry = directoryEntry;
+
+            _assignOwnerCommand = new DelegateCommand(AssignOwner, CanExecuteAssignOwner);
+        }
+
+        private bool CanExecuteAssignOwner(object parameter)
+        {
+            return _detectedUser != null && _owner != _detectedUser;
+        }
+
+        private void AssignOwner()
+        {
+            Owner = _detectedUser;
         }
 
         public string Name { get; set; }

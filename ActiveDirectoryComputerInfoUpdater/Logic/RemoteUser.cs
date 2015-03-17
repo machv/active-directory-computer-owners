@@ -15,7 +15,7 @@ namespace ActiveDirectoryComputerInfoUpdater
             {
                 ManagementScope scope;
 
-                if (!computerName.Equals("localhost", StringComparison.OrdinalIgnoreCase))
+                if (!computerName.Equals("localhost", StringComparison.OrdinalIgnoreCase) && Environment.MachineName.ToLower() != computerName.ToLower())
                 {
                     ConnectionOptions connection = new ConnectionOptions();
                     connection.Username = username;
@@ -39,7 +39,7 @@ namespace ActiveDirectoryComputerInfoUpdater
                         return wmiObject["UserName"] as string;
                 }
             }
-            catch { }
+            catch(Exception e) { }
 
             return null;
         }

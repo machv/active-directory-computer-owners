@@ -101,10 +101,14 @@
                         <DataGridTemplateColumn Header="Detected User" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding DetectedUser.SamAccountName}"/>
-                                        <Button Content="Assign" />
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock VerticalAlignment="Center" Grid.Column="0" Text="{Binding DetectedUser.SamAccountName}"/>
+                                        <Button Grid.Column="1" Command="{Binding AssignOwnerCommand}"  Content="Assign" Padding="3" Margin="3" />
+                                    </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
