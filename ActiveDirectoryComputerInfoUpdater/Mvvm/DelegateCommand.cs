@@ -66,18 +66,23 @@ namespace Mach.Wpf.Mvvm
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
         /// </summary>
-        public event EventHandler CanExecuteChanged;
+        //public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         /// <summary>
         /// Fires <see cref="CanExecuteChanged"/> event.
         /// </summary>
-        public void RaiseCanExecuteChanged()
-        {
-            if (CanExecuteChanged != null)
-            {
-                CanExecuteChanged(this, EventArgs.Empty);
-            }
-        }
+        //public void RaiseCanExecuteChanged()
+        //{
+        //    if (CanExecuteChanged != null)
+        //    {
+        //        CanExecuteChanged(this, EventArgs.Empty);
+        //    }
+        //}
 #pragma warning restore 67
     }
 }

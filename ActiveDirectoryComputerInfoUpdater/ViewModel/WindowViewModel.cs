@@ -66,9 +66,14 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             _loadOrganizationalUnitsCommand = new DelegateCommand(LoadOrganizationalUnits);
             _organizationalUnitChangedCommand = new DelegateCommand(OrganizationalUnitChanged);
             _loadUsersCommand = new DelegateCommand(LoadUsers);
-            _queryLoggedUsersCommand = new DelegateCommand(QueryLoggedUsers);
+            _queryLoggedUsersCommand = new DelegateCommand(QueryLoggedUsers, CanExecuteQueryLoggedUsers);
 
             _selectedOrganizationalUnit = new OrganizationalUnitViewModel(null); //dummy selected item
+        }
+
+        private bool CanExecuteQueryLoggedUsers(object parameter)
+        {
+            return _users != null && _selectedOrganizationalUnit != null && _selectedOrganizationalUnit.Entry != null;
         }
 
         private void QueryLoggedUsers()

@@ -32,12 +32,12 @@
                 </Grid.ColumnDefinitions>
 
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
-                    <Button Command="{Binding LoadOrganizationalUnitsCommand}" Content="Load Structure" Padding="5"  Margin="5" />
-                    <Button Command="{Binding LoadUsersCommand}" Content="Load Users" Padding="5" Margin="5" />
+                    <Button Command="{Binding LoadOrganizationalUnitsCommand}" Content="Load Structure" Padding="3"  Margin="5" />
+                    <Button Command="{Binding LoadUsersCommand}" Content="Load Users" Padding="3" Margin="5" />
                 </WrapPanel>
 
                 <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
-                    <Button Content="Query logged users on computers" Margin="5" Padding="3" Command="{Binding QueryLoggedUsersCommand}" />
+                    <Button Command="{Binding QueryLoggedUsersCommand}" Content="Query logged users on computers" Margin="5" Padding="3" />
                 </WrapPanel>
             </Grid>
         </Border>
