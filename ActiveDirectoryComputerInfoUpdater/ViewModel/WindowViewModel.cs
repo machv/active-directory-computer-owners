@@ -74,27 +74,8 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             _selectedOrganizationalUnit = new OrganizationalUnitViewModel(null); //dummy selected item
 
 
-            Task.Run(() =>
-            {
-                return DoLoadUsers();
-            })
-            .ContinueWith(users =>
-            {
-                Users = users.Result;
-
-                CommandManager.InvalidateRequerySuggested();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-
-            Task.Run(() =>
-            {
-                return DoLoadOrganizationalUnits();
-            })
-            .ContinueWith(units =>
-            {
-                OrganizationalUnits = units.Result;
-
-                CommandManager.InvalidateRequerySuggested();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            LoadUsers();
+            LoadOrganizationalUnits();
         }
 
         private bool CanLoadOrganizationalUnits(object parameter)
@@ -122,7 +103,16 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         public void LoadUsers()
         {
-            Users = DoLoadUsers();
+            Task.Run(() =>
+            {
+                return DoLoadUsers();
+            })
+            .ContinueWith(users =>
+            {
+                Users = users.Result;
+
+                CommandManager.InvalidateRequerySuggested();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private ObservableCollection<UserViewModel> DoLoadUsers()
@@ -159,7 +149,16 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         private void LoadOrganizationalUnits()
         {
-            OrganizationalUnits = DoLoadOrganizationalUnits();
+            Task.Run(() =>
+            {
+                return DoLoadOrganizationalUnits();
+            })
+            .ContinueWith(units =>
+            {
+                OrganizationalUnits = units.Result;
+
+                CommandManager.InvalidateRequerySuggested();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private OrganizationalUnitsTreeViewModel DoLoadOrganizationalUnits()
