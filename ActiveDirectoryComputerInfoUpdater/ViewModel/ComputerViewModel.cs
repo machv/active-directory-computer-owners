@@ -51,10 +51,12 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             {
                 if (_owner != value)
                 {
-                    _owner = value;
-
                     if (value != null && _directoryEntry != null)
+                    {
+                        _owner = value;
+
                         ActiveDirectory.UpdateDirectoryEntry(_directoryEntry, "managedBy", value.DistinguishedName);
+                    }
 
                     OnPropertyChanged();
                 }
