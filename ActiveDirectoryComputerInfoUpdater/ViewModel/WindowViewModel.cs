@@ -3,6 +3,7 @@ using Mach.Wpf.Mvvm;
 using System.Collections.ObjectModel;
 using System.DirectoryServices;
 using System.Windows.Input;
+using System;
 
 namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 {
@@ -12,6 +13,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
         private DelegateCommand _loadOrganizationalUnitsCommand;
         private DelegateCommand _organizationalUnitChangedCommand;
         private DelegateCommand _loadUsersCommand;
+        private DelegateCommand _queryLoggedUsersCommand;
         private OrganizationalUnitViewModel _selectedOrganizationalUnit;
         private ObservableCollection<UserViewModel> _users;
 
@@ -54,14 +56,27 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
         {
             get { return _loadUsersCommand; }
         }
+        public ICommand QueryLoggedUsersCommand
+        {
+            get { return _queryLoggedUsersCommand; }
+        }
 
         public WindowViewModel()
         {
             _loadOrganizationalUnitsCommand = new DelegateCommand(LoadOrganizationalUnits);
             _organizationalUnitChangedCommand = new DelegateCommand(OrganizationalUnitChanged);
             _loadUsersCommand = new DelegateCommand(LoadUsers);
+            _queryLoggedUsersCommand = new DelegateCommand(QueryLoggedUsers);
 
             _selectedOrganizationalUnit = new OrganizationalUnitViewModel(null); //dummy selected item
+        }
+
+        private void QueryLoggedUsers()
+        {
+            if (_selectedOrganizationalUnit != null)
+            {
+                _selectedOrganizationalUnit.DetectLoggedUsers(_users);
+            }
         }
 
         public void LoadUsers()
@@ -89,7 +104,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         private void OrganizationalUnitChanged()
         {
-            _selectedOrganizationalUnit.LoadComputers(Users);
+            _selectedOrganizationalUnit.LoadComputers(_users);
         }
 
         private void LoadOrganizationalUnits()

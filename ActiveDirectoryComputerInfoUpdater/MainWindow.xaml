@@ -8,7 +8,7 @@
         xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
         xmlns:Mvvm="clr-namespace:Mach.Wpf.Mvvm"
         mc:Ignorable="d"
-        Title="AD Computers Owners" Height="350" Width="525">
+        Title="AD Computers Owners" Height="350" Width="725">
 
     <Window.DataContext>
         <ViewModel:WindowViewModel />
@@ -34,6 +34,10 @@
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                     <Button Command="{Binding LoadOrganizationalUnitsCommand}" Content="Load Structure" Padding="5"  Margin="5" />
                     <Button Command="{Binding LoadUsersCommand}" Content="Load Users" Padding="5" Margin="5" />
+                </WrapPanel>
+
+                <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                    <Button Content="Query logged users on computers" Margin="5" Padding="3" Command="{Binding QueryLoggedUsersCommand}" />
                 </WrapPanel>
             </Grid>
         </Border>
@@ -83,7 +87,6 @@
                         <DataGridTemplateColumn Header="Owner" IsReadOnly="False">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <!--  -->
                                     <toolkit:AutoCompleteBox
                                                 ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Users}"
                                                 ValueMemberPath="SamAccountName"
@@ -93,17 +96,20 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Detected User" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding DetectedUser.SamAccountName}"/>
+                                        <Button Content="Assign" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-
-                <!--<toolkit:AutoCompleteBox Grid.Row="2"
-                                                ItemsSource="{Binding Users}"
-                                                ValueMemberPath="SamAccountName"
-                                                ItemTemplate="{StaticResource AutoCompleteBoxItemTemplate}"
-                                                SelectedItem="{Binding Owner, Mode=TwoWay}" />-->
             </Grid>
-
-
         </Grid>
     </DockPanel>
 </Window>

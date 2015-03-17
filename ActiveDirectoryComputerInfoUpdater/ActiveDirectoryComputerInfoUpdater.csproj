@@ -38,6 +38,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Controls.Input.Toolkit">
       <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
     </Reference>
@@ -66,6 +67,7 @@
     </ApplicationDefinition>
     <Compile Include="Logic\ActiveDirectory.cs" />
     <Compile Include="Logic\OrganizationalUnitTreeViewSelectionBehaviour.cs" />
+    <Compile Include="Logic\RemoteUser.cs" />
     <Compile Include="Mvvm\DelegateCommand.cs" />
     <Compile Include="Mvvm\NotifyPropertyBase.cs" />
     <Compile Include="Mvvm\TreeViewSelectionBehavior.cs" />

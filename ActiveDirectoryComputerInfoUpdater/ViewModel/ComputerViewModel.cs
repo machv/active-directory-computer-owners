@@ -8,6 +8,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
     public class ComputerViewModel : NotifyPropertyBase
     {
         private UserViewModel _owner;
+        private UserViewModel _detectedUser;
         private DirectoryEntry _directoryEntry;
 
         public ComputerViewModel(DirectoryEntry directoryEntry)
@@ -38,6 +39,15 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
                     OnPropertyChanged();
                 }
+            }
+        }
+        public UserViewModel DetectedUser
+        {
+            get { return _detectedUser; }
+            set
+            {
+                _detectedUser = value;
+                OnPropertyChanged();
             }
         }
     }

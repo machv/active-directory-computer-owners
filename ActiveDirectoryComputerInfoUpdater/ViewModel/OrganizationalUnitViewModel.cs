@@ -1,4 +1,5 @@
 ﻿using ActiveDirectoryComputerInfoUpdater.Logic;
+using ActiveDirectoryComputerInfoUpdater.Properties;
 using Mach.Wpf.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,31 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             }
         }
 
+        public void DetectLoggedUsers(ObservableCollection<UserViewModel> users)
+        {
+            string domain = Settings.Default.Domain;
+            if (string.IsNullOrEmpty(Settings.Default.Domain))
+            {
+                string fqdn = ActiveDirectory.GetDomainName();
+                domain = ActiveDirectory.GetNetbiosNameForDomain(fqdn);
+            }
+
+            foreach (ComputerViewModel computer in _computers)
+            {
+                string login = Remote.DetectLogin(computer.Name, Settings.Default.User, Settings.Default.Password, domain);
+
+                if (!string.IsNullOrEmpty(login))
+                {
+                    if (login.Contains("\\"))
+                    {
+                        login = login.Substring(login.IndexOf("\\") + 1);
+                    }
+
+                    computer.DetectedUser = users.Where(u => u.SamAccountName == login).FirstOrDefault();
+                }
+            }
+        }
+
         public void LoadComputers()
         {
             LoadComputers(null);
@@ -123,7 +149,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
                         if (users != null)
                         {
-                           computer.Owner = users.Where(u => u.DistinguishedName == computer.ManagedBy).FirstOrDefault();
+                            computer.Owner = users.Where(u => u.DistinguishedName == computer.ManagedBy).FirstOrDefault();
                         }
                     }
 
