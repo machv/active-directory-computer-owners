@@ -74,6 +74,7 @@
     <Compile Include="ViewModel\ComputerViewModel.cs" />
     <Compile Include="ViewModel\OrganizationalUnitsTreeViewModel.cs" />
     <Compile Include="ViewModel\OrganizationalUnitViewModel.cs" />
+    <Compile Include="ViewModel\UserDetectionProgressViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\WindowViewModel.cs" />
     <Page Include="View\MainWindow.xaml">

@@ -16,7 +16,17 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
         private string _name;
         private ObservableCollection<OrganizationalUnitViewModel> _children;
         private ObservableCollection<ComputerViewModel> _computers;
+        private UserDetectionProgressViewModel _detectionProgress;
 
+        public UserDetectionProgressViewModel DetectionProgress
+        {
+            get { return _detectionProgress; }
+            set
+            {
+                _detectionProgress = value;
+                OnPropertyChanged();
+            }
+        }
         public DirectoryEntry Entry { get; set; }
         public string Name
         {
@@ -50,9 +60,11 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         public OrganizationalUnitViewModel(DirectoryEntry entry)
         {
-            ChildOrganizationalUnits = new ObservableCollection<OrganizationalUnitViewModel>();
+            _detectionProgress = new UserDetectionProgressViewModel();
+            _computers = new ObservableCollection<ComputerViewModel>();
+            _children = new ObservableCollection<OrganizationalUnitViewModel>();
+
             Entry = entry;
-            Computers = new ObservableCollection<ComputerViewModel>();
         }
 
         public void LoadChildren()
@@ -93,19 +105,31 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                 domain = ActiveDirectory.GetNetbiosNameForDomain(fqdn);
             }
 
+            DetectionProgress = new UserDetectionProgressViewModel();
+            DetectionProgress.ComputersToProcess = _computers.Count;
+
             foreach (ComputerViewModel computer in _computers)
             {
-                string login = Remote.DetectLogin(computer.Name, Settings.Default.User, Settings.Default.Password, domain);
-
-                if (!string.IsNullOrEmpty(login))
+                Task.Run(() =>
                 {
-                    if (login.Contains("\\"))
+                    return Remote.DetectLogin(computer.Name, Settings.Default.User, Settings.Default.Password, domain);
+                })
+                .ContinueWith(result =>
+                {
+                    string login = result.Result;
+
+                    if (!string.IsNullOrEmpty(login))
                     {
-                        login = login.Substring(login.IndexOf("\\") + 1);
+                        if (login.Contains("\\"))
+                        {
+                            login = login.Substring(login.IndexOf("\\") + 1);
+                        }
+
+                        computer.DetectedUser = users.Where(u => u.SamAccountName == login).FirstOrDefault();
                     }
 
-                    computer.DetectedUser = users.Where(u => u.SamAccountName == login).FirstOrDefault();
-                }
+                    DetectionProgress.ComputersProcessed += 1;
+                });
             }
         }
 

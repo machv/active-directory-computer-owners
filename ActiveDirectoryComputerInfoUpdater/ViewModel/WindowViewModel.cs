@@ -73,7 +73,6 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
             _selectedOrganizationalUnit = new OrganizationalUnitViewModel(null); //dummy selected item
 
-
             LoadUsers();
             LoadOrganizationalUnits();
         }

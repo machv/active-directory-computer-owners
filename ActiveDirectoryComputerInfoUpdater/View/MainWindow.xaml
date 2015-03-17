@@ -123,7 +123,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <!--<ProgressBar Height="5" Grid.Row="2" />-->
+                <ProgressBar Height="8" Grid.Row="2" Value="{Binding SelectedOrganizationalUnit.DetectionProgress.ComputersProcessed}" Minimum="0" Maximum="{Binding SelectedOrganizationalUnit.DetectionProgress.ComputersToProcess}" />
             </Grid>
         </Grid>
     </DockPanel>
