@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using System.DirectoryServices;
 using System.Windows.Input;
 using System;
+using System.Threading.Tasks;
 
 namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 {
     public class WindowViewModel : NotifyPropertyBase
     {
+        private bool _usersLoading = false;
         private OrganizationalUnitsTreeViewModel _organizationalUnits;
         private DelegateCommand _loadOrganizationalUnitsCommand;
         private DelegateCommand _organizationalUnitChangedCommand;
@@ -65,10 +67,26 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
         {
             _loadOrganizationalUnitsCommand = new DelegateCommand(LoadOrganizationalUnits);
             _organizationalUnitChangedCommand = new DelegateCommand(OrganizationalUnitChanged);
-            _loadUsersCommand = new DelegateCommand(LoadUsers);
+            _loadUsersCommand = new DelegateCommand(LoadUsers, CanExecuteLoadUsers);
             _queryLoggedUsersCommand = new DelegateCommand(QueryLoggedUsers, CanExecuteQueryLoggedUsers);
 
             _selectedOrganizationalUnit = new OrganizationalUnitViewModel(null); //dummy selected item
+
+
+            Task.Run(() =>
+            {
+                return DoLoadUsers();
+            })
+            .ContinueWith(users =>
+            {
+                Users = users.Result;
+                CommandManager.InvalidateRequerySuggested();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private bool CanExecuteLoadUsers(object parameter)
+        {
+            return _usersLoading == false;
         }
 
         private bool CanExecuteQueryLoggedUsers(object parameter)
@@ -86,6 +104,13 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 
         public void LoadUsers()
         {
+            Users = DoLoadUsers();
+        }
+
+        private ObservableCollection<UserViewModel> DoLoadUsers()
+        {
+            _usersLoading = true;
+
             ObservableCollection<UserViewModel> users = new ObservableCollection<UserViewModel>();
 
             DirectoryEntry rootEntry = ActiveDirectory.GetDirectoryEntry();
@@ -104,7 +129,9 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                 }
             }
 
-            Users = users;
+            _usersLoading = false;
+
+            return users;
         }
 
         private void OrganizationalUnitChanged()
