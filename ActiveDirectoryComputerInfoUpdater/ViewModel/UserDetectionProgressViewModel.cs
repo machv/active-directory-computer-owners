@@ -30,5 +30,11 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public UserDetectionProgressViewModel()
+        {
+            _computersProcessed = 0;
+            _computersToProcess = 1;
+        }
     }
 }

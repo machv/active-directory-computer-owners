@@ -80,11 +80,12 @@
                           BorderThickness="0"
                           ItemsSource="{Binding SelectedOrganizationalUnit.Computers}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                        <DataGridTextColumn Header="Operating System" Binding="{Binding OperatingSystem}" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Operating System" Binding="{Binding OperatingSystem}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Last logon" Binding="{Binding LastLogon}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="BitLocker keys" Binding="{Binding BitlockerRecoveryKeys}" IsReadOnly="True" />
                         <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
                         <DataGridTextColumn Header="Location" Binding="{Binding Location}" />
-                        <DataGridTextColumn Header="BitLocker keys" Binding="{Binding BitlockerRecoveryKeys}" />
 
                         <DataGridTemplateColumn Header="Owner" IsReadOnly="False">
                             <DataGridTemplateColumn.CellTemplate>
