@@ -122,7 +122,16 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             {
                 foreach (SearchResult result in computers)
                 {
-                    ComputerViewModel computer = new ComputerViewModel(result.GetDirectoryEntry());
+                    UserViewModel owner = null;
+                    if (result.Properties.Contains("managedBy"))
+                    {
+                        if (users != null)
+                        {
+                            owner = users.Where(u => u.DistinguishedName == result.Properties["managedBy"][0] as string).FirstOrDefault();
+                        }
+                    }
+
+                    ComputerViewModel computer = new ComputerViewModel(result.GetDirectoryEntry(), owner);
                     computer.DistinguishedName = ActiveDirectory.GetDistinguishedNameFromPath(result.Path);
 
                     if (result.Properties.Contains("lastLogon"))
@@ -144,14 +153,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
                         computer.Location = result.Properties["location"][0] as string;
 
                     if (result.Properties.Contains("managedBy"))
-                    {
                         computer.ManagedBy = result.Properties["managedBy"][0] as string;
-
-                        if (users != null)
-                        {
-                            computer.Owner = users.Where(u => u.DistinguishedName == computer.ManagedBy).FirstOrDefault();
-                        }
-                    }
 
                     using (SearchResultCollection results = ActiveDirectory.GetBitlockerRecoveryKeys(result.GetDirectoryEntry()))
                         computer.BitlockerRecoveryKeys = results.Count;

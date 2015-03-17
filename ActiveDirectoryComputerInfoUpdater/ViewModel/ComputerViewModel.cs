@@ -2,6 +2,7 @@
 using Mach.Wpf.Mvvm;
 using System;
 using System.DirectoryServices;
+using System.Windows.Input;
 
 namespace ActiveDirectoryComputerInfoUpdater.ViewModel
 {
@@ -17,6 +18,11 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             _directoryEntry = directoryEntry;
 
             _assignOwnerCommand = new DelegateCommand(AssignOwner, CanExecuteAssignOwner);
+        }
+
+        public ComputerViewModel(DirectoryEntry directoryEntry, UserViewModel owner) : this(directoryEntry)
+        {
+            _owner = owner;
         }
 
         private bool CanExecuteAssignOwner(object parameter)
@@ -61,6 +67,14 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             {
                 _detectedUser = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public ICommand AssignOwnerCommand
+        {
+            get
+            {
+                return _assignOwnerCommand;
             }
         }
     }
