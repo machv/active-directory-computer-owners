@@ -11,28 +11,45 @@ namespace ActiveDirectoryComputerInfoUpdater.Logic
         /// <summary>
         /// Update property on directory entry with new value.
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="directoryEntry"></param>
         /// <param name="property"></param>
         /// <param name="value"></param>
         /// <returns>true if property already existed and was updated.</returns>
-        public static bool UpdateDirectoryEntry(DirectoryEntry entry, string property, object value)
+        public static bool UpdateDirectoryEntry(DirectoryEntry directoryEntry, string property, object value)
         {
             bool exists = false;
 
-            if (entry.Properties.Contains(property))
+            if (directoryEntry.Properties.Contains(property))
             {
-                entry.Properties[property].Value = value;
+                directoryEntry.Properties[property].Value = value;
 
                 exists = true;
             }
             else
             {
-                entry.Properties[property].Add(value);
+                directoryEntry.Properties[property].Add(value);
             }
 
-            entry.CommitChanges();
+            directoryEntry.CommitChanges();
 
             return exists;
+        }
+
+        public static void RemoveDirectoryEntryProperty(DirectoryEntry directoryEntry, string property)
+        {
+            if (directoryEntry.Properties.Contains(property))
+            {
+                object value = directoryEntry.Properties[property][0];
+                directoryEntry.Properties[property].Remove(value);
+            }
+        }
+
+        public static void RemoveDirectoryEntryProperty(DirectoryEntry directoryEntry, string property, object value)
+        {
+            if (directoryEntry.Properties.Contains(property))
+            {
+                directoryEntry.Properties[property].Remove(value);
+            }
         }
 
         public static SearchResultCollection GetSingleLevelSubOrganizationalUnits(DirectoryEntry searchRoot)

@@ -9,6 +9,7 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
     public class ComputerViewModel : NotifyPropertyBase
     {
         private DelegateCommand _assignOwnerCommand;
+        private DelegateCommand _removeOwnerCommand;
         private UserViewModel _owner;
         private UserViewModel _detectedUser;
         private DirectoryEntry _directoryEntry;
@@ -18,6 +19,20 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             _directoryEntry = directoryEntry;
 
             _assignOwnerCommand = new DelegateCommand(AssignOwner, CanExecuteAssignOwner);
+            _removeOwnerCommand = new DelegateCommand(RemoveOwner, CanExecuteRemoveOwner);
+        }
+
+        private void RemoveOwner()
+        {
+            ActiveDirectory.RemoveDirectoryEntryProperty(_directoryEntry, "managedBy");
+
+            _owner = null;
+            ManagedBy = null;
+        }
+
+        private bool CanExecuteRemoveOwner(object parameter)
+        {
+            return string.IsNullOrEmpty(ManagedBy) == false;
         }
 
         public ComputerViewModel(DirectoryEntry directoryEntry, UserViewModel owner) : this(directoryEntry)
@@ -77,6 +92,14 @@ namespace ActiveDirectoryComputerInfoUpdater.ViewModel
             get
             {
                 return _assignOwnerCommand;
+            }
+        }
+
+        public ICommand RemoveOwnerCommand
+        {
+            get
+            {
+                return _removeOwnerCommand;
             }
         }
     }

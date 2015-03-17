@@ -88,12 +88,19 @@
                         <DataGridTemplateColumn Header="Owner" IsReadOnly="False">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <toolkit:AutoCompleteBox
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <toolkit:AutoCompleteBox
                                                 ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Users}"
                                                 ValueMemberPath="SamAccountName"
                                                 ItemTemplate="{StaticResource AutoCompleteBoxItemTemplate}"
                                                 Text="{Binding Owner.SamAccountName, Mode=OneTime}"
                                                 SelectedItem="{Binding Owner, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        <Button Grid.Column="1" Command="{Binding RemoveOwnerCommand}"  Content="Remove" Padding="3" Margin="3" />
+                                    </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -114,7 +121,7 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                
+
                 <!--<ProgressBar Height="5" Grid.Row="2" />-->
             </Grid>
         </Grid>
